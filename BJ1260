@@ -1,0 +1,86 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+
+public class BJ1260 {
+// dfs bfs
+	static class Node {
+		int num;
+		public Node(int num, Node link) {
+			this.num = num;
+			this.link = link;
+		}
+		Node link;
+		
+	}
+	
+	static int N;
+	static Node[] bfsList;
+	static Node[] dfsList;
+	static StringBuilder dfsSb = new StringBuilder();
+	static StringBuilder bfsSb = new StringBuilder();
+	
+	
+	public static void main(String[] args) throws IOException {
+		System.setIn(new FileInputStream("input1260.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
+		int start = Integer.parseInt(st.nextToken());
+		dfsList = new Node[N+1];
+		for (int m=0; m<M; m++) {
+			st = new StringTokenizer(br.readLine());
+			int from = Integer.parseInt(st.nextToken());
+			int to = Integer.parseInt(st.nextToken());
+			if (dfsList[from]==null) {
+				dfsList[from] = new Node(to, dfsList[from]);
+			} else {
+				for (Node curr = dfsList[from]; curr!=null; curr=curr.link) {
+					if (to<=curr.num) {
+						dfsList[from] = new Node(to, curr);
+					}
+				}
+			}
+			if (dfsList[to]==null) {
+				dfsList[to] = new Node(from, dfsList[to]);
+			} else {
+				for (Node curr = dfsList[to]; curr!=null; curr=curr.link) {
+					if (from<=curr.num) {
+						dfsList[to] = new Node(from, dfsList[to]);
+					}
+				}
+			}
+		}
+		
+		for (int i=1; i<=N; i++) {
+			for(Node temp = dfsList[i]; temp!=null; temp=temp.link) {
+				System.out.print(temp.num+" ");
+			}
+			System.out.println();
+		}
+		
+		boolean dVisited[] = new boolean[N];
+		dfs(dVisited, start);
+		System.out.println(dfsSb);
+		
+	}
+
+	private static void dfs(boolean[] dVisited, int curr) {
+		dVisited[curr] = true;
+		dfsSb.append(curr).append(" ");
+		for (Node temp=dfsList[curr]; temp!=null; temp=temp.link) {
+			if (!dVisited[temp.num]) {
+				dfs(dVisited, temp.num);
+			}
+		}
+		
+	}
+
+}
