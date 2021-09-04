@@ -1,0 +1,62 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class BJ16637 {
+// 괄호 추가하기
+	static int N, result, max=Integer.MIN_VALUE;
+	static char[] arr;
+	static boolean[] visited;
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("input16637.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		arr = br.readLine().toCharArray();
+		visited = new boolean[N/2+1];
+		
+		subset(0);
+		System.out.println(max);
+		
+		
+	}
+	
+	private static void subset(int cnt) {
+		if (cnt==N/2) {
+			result=arr[0]-'0';
+			for (int i=1; i<=N/2; i++) {
+				int temp = arr[2*i]-'0';
+				if (visited[i] && i!=N/2) {
+					temp = operation((arr[2*i]-'0'), arr[2*i+1], (arr[2*i+2]-'0'));
+					result = operation(result, arr[2*i-1], temp);
+					i++;
+				} else {
+					result = operation(result, arr[2*i-1], temp);
+				}
+			}
+			if (max<result)	max=result;
+			return;
+		}
+		
+		if (cnt==0 || !visited[cnt-1]) {
+			visited[cnt]=true;
+			subset(cnt+1);
+		}
+		
+		visited[cnt]=false;
+		subset(cnt+1);
+		
+	}
+	private static int operation(int pre, char op, int post) {
+		if (op=='+') {
+			return pre+post;
+		} else if(op=='-') {
+			return pre-post;
+		} else {
+			return pre*post;
+		}
+		
+		
+	}
+
+}
