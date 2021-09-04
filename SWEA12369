@@ -1,0 +1,53 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class SWExpert12369 {
+// 일련번호 붙이기
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("input12369.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		StringBuilder sb = new StringBuilder();
+		for (int t=1; t<=T; t++) {
+			sb.append("#").append(t).append(" ");
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			String letter = st.nextToken();
+			long num = Long.parseLong(st.nextToken())+1;
+			long len = letter.length();
+			long divisor = (long)1;
+			long digit = 0;
+			while(num/divisor>0) {
+				num -= divisor;
+				divisor *= (long)len;
+				digit++;
+			}
+//			System.out.println(num+" "+digit);
+			char[] arr = letter.toCharArray();
+			char[] ans = new char[(int) digit];
+			if (num==0) {
+				for (long i=0; i<digit-1; i++) {
+					sb.append(arr[(int) (len-1)]);
+				}
+			} else {
+				num--;
+				for (long i=0; i<digit; i++) {
+					divisor/=(long)len;
+					ans[(int) i] = arr[(int) (num/divisor)];
+					num %= divisor;
+				}
+				
+				for (long i=0; i<digit; i++) {
+					sb.append(ans[(int) i]);
+				}
+			}
+			
+			sb.append("\n");
+		}
+		System.out.println(sb);
+	}
+
+}
