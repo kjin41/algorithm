@@ -1,0 +1,109 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class BJ2578 {
+// 빙고
+	public static void main(String[] args) throws IOException {
+		System.setIn(new FileInputStream("src\\input2578.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int arr[][] = new int[5][5];
+		boolean isCalled[][] = new boolean[5][5];
+		int count = 0;
+		
+		for (int i=0; i<5; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+			for (int j=0; j<5; j++) {
+				arr[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+//		for (int i=0; i<5; i++) {
+//			for (int j=0; j<5; j++) {
+//				System.out.print(arr[i][j]+ " ");
+//			}
+//			System.out.println();
+//		}
+		int result = 0;
+		
+		loop2:
+		for (int i=0; i<5; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+			for (int j=0; j<5; j++) {
+				int ans = Integer.parseInt(st.nextToken());
+				result++;
+				
+				loop1:
+				for (int r=0; r<5; r++) {
+					for (int c=0; c<5; c++) {
+						if (ans == arr[r][c]) {
+							// 빙고판에 표시
+							isCalled[r][c] = true;
+							
+							count += isBingo(isCalled, r, c);
+							if (count == 3)
+								break loop2;
+							break loop1;
+						}
+					}
+				}
+				
+			}
+		}
+		
+		System.out.println(result);
+	}
+	
+	private static int isBingo(boolean[][] isCalled, int r, int c) {
+		int count = 0;
+		int temp = 0;
+		for (int i=0; i<5; i++) {
+			if (isCalled[r][i] == true) {
+				temp++;
+			}
+			if (temp == 5) {
+				count++;
+			}
+		}
+		
+		temp = 0;
+		for (int i=0; i<5; i++) {
+			if (isCalled[i][c] == true) {
+				temp++;
+			}
+			if (temp == 5) {
+				count++;
+			}
+		}
+		
+		temp = 0;
+		if (r == c) {
+			for (int i=0; i<5; i++) {
+				if (isCalled[i][i] == true) {
+					temp++;
+				}
+				if (temp == 5) {
+					count++;
+				}
+			}
+		}
+		
+		temp = 0;
+		if (r+c == 4) {
+			for (int i=0; i<5; i++) {
+				if (isCalled[i][4-i] == true) {
+					temp++;
+				}
+				if (temp == 5) {
+					count++;
+				}
+			}
+		}
+			
+		return count;
+		
+	
+	}
+}
