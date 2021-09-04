@@ -1,0 +1,48 @@
+https://swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AXmwMidaSLIDFARX
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class SWExpert12051 {
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		// System.setIn(new FileInputStream("src\\input12051.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		for (int tc=1; tc<=T; tc++) {
+			
+			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+			
+			int N = Integer.parseInt(st.nextToken());
+			int Pd = Integer.parseInt(st.nextToken());
+			int Pg = Integer.parseInt(st.nextToken());
+			int elem = 1;
+			if (Pd%2 == 0) {
+				if (Pd%4 == 0)
+					elem *= 2;
+				elem *= 2;
+			} 
+			if(Pd%5 == 0) {
+				if (Pd%25 == 0)
+					elem *= 5;
+				elem *= 5;
+			}
+			
+			int Wd = Pd/elem;
+			int D = 100/elem;
+			int Ld = D-Wd;
+			
+			if (D > N || (Pg == 100 && Ld != 0) || (Pg == 0 && Wd != 0)) {
+				System.out.println("#"+tc+" Broken");
+			} else {
+				System.out.println("#"+tc+" Possible");
+			}
+			
+		
+		}
+	}
+
+}
