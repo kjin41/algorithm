@@ -1,0 +1,31 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class BJ8958 {
+// OX퀴즈
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("input8958.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
+		StringBuilder sb = new StringBuilder();
+		for (int i=0; i<N; i++) {
+			int cnt=0, result=0;
+			String str = br.readLine();
+			int len = str.length();
+			for (int j=0; j<len; j++) {
+				if (str.charAt(j)=='O') {
+					cnt++; 
+					result+=cnt;
+				} else {
+					cnt=0;
+				}
+			}
+			sb.append(result).append("\n");
+		}
+		System.out.println(sb);
+		
+	}
+
+}
