@@ -1,0 +1,36 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class BJ2961_2 {
+// 도영이가 만든 맛있는 음식
+// 비트마스크
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("input2961.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int n = Integer.parseInt(br.readLine());
+		int[] sour = new int[n];
+		int[] bitter = new int[n];
+		for (int i=0; i<n; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			sour[i] = Integer.parseInt(st.nextToken());
+			bitter[i] = Integer.parseInt(st.nextToken());
+		}
+		int N = 2<<n-1;
+		int min=Integer.MAX_VALUE;
+		for (int i=1; i<N; i++) {
+			int sourSum=1, bitterSum=0;
+			for (int j=0; j<n; j++) {
+				if ((i & 1<<j)!=0) {
+					sourSum *= sour[j];
+					bitterSum += bitter[j];
+				}
+			}
+			min = Math.min(min, Math.abs(sourSum-bitterSum));
+		}
+		System.out.println(min);
+	}
+
+}
