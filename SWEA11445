@@ -1,0 +1,26 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class SWExpert11445 {
+  // 무한 사전
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("src\\input11445.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		
+		for (int tc=1; tc<=T; tc++) {
+			String result = "Y";
+			String p = br.readLine();
+			String q = br.readLine();
+			
+			if(p.length()+1==q.length() && q.charAt(q.length()-1) == 'a' && p.equals(q.substring(0, q.length()-1)) ) {
+				result = "N";
+			}
+			System.out.println("#"+tc+" "+result);
+		}
+
+	}
+
+}
