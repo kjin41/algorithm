@@ -1,0 +1,78 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class Main {
+// 최단경로
+	static class Edge{
+		int v;
+		int w;
+		Edge link;
+		
+		public Edge(int v, int w, Edge link) {
+			super();
+			this.v = v;
+			this.w = w;
+			this.link = link;
+		}
+	}
+	
+//	static Edge[] edgeList;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int V = Integer.parseInt(st.nextToken());
+		int E = Integer.parseInt(st.nextToken());
+		int start = Integer.parseInt(br.readLine());
+		final int INF = Integer.MAX_VALUE;
+		
+		Edge[] edgeList = new Edge[V+1];
+		int[] distance = new int[V+1];
+		boolean[] visited = new boolean[V+1];
+		
+		for (int i=0; i<E; i++) {
+			st = new StringTokenizer(br.readLine());
+			int u = Integer.parseInt(st.nextToken());
+			int v = Integer.parseInt(st.nextToken());
+			int w = Integer.parseInt(st.nextToken());
+			edgeList[u] = new Edge(v, w, edgeList[u]);
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		Arrays.fill(distance, INF);
+		distance[start]=0;
+		int min=0, current=0, cnt=0;
+		for (int i=1; i<=V; i++) {
+			min=INF;
+			for (int j=1; j<=V; j++) {
+				if (!visited[j]&&min>distance[j]) {
+					min = distance[j];
+					current=j;
+					cnt++;
+				}
+			}
+			
+			visited[current]=true;
+			
+			for (Edge c=edgeList[current]; c!=null; c=c.link) {
+				if (!visited[c.v] && c.w!=0 && distance[c.v]>min+c.w) {
+					distance[c.v]=min+c.w;
+				}
+			}
+		}
+		for (int i=1; i<=V; i++) {
+			if (distance[i]==INF) {
+				sb.append("INF").append("\n");
+			} else {
+				sb.append(distance[i]).append("\n");
+			}
+		}
+		System.out.println(sb);
+		
+	}
+	
+	
+
+}
