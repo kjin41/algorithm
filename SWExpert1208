@@ -1,0 +1,52 @@
+// https://swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV139KOaABgCFAYh
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class SWExpert1208 {
+// Flatten
+	public static void main(String[] args) throws NumberFormatException, IOException {
+//		System.setIn(new FileInputStream("src\\input1208.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		for (int tc=1; tc<=10; tc++) {
+			int count = Integer.parseInt(br.readLine());
+			int[] nums = new int[100];
+			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+			for (int i=0; i<100; i++) {
+				nums[i] = Integer.parseInt(st.nextToken());
+			}
+			
+			Arrays.sort(nums);
+			for (int i=0; i<count; i++) {
+				if (nums[0] == nums[99]) {
+					break;
+				} else {
+					nums[0]++;
+					nums[99]--;
+					int j=0;
+					while(nums[j] > nums[j+1]) {
+						int temp = nums[j];
+						nums[j] = nums[j+1];
+						nums[j+1] = temp;
+						j++;
+					}
+					j = 98;
+					while(nums[j] > nums[j+1]) {
+						int temp = nums[j];
+						nums[j] = nums[j+1];
+						nums[j+1] = temp;
+						j--;
+					}
+				}
+			}
+			int result = nums[99]-nums[0];
+			System.out.println("#"+ tc + " "+ result);
+		}
+	}
+
+}
