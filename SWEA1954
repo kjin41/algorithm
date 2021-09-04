@@ -1,0 +1,62 @@
+package hwalgo02_서울_07반_강진;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class SWExpert1954 {
+// 달팽이 숫자 문제
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("src\\input1954.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		int N = Integer.parseInt(br.readLine());
+		for (int tc=1; tc<=N; tc++) {
+			int n = Integer.parseInt(br.readLine());
+			int[][] arr = new int[n][n];
+			System.out.println("#"+tc);
+			snail(arr, n, 0, 0, 1);
+			
+			for (int[] row: arr) {
+				for (int k: row) {
+					System.out.print(k+" ");
+				}
+				System.out.println();
+			}
+		}
+	}
+	// snail(arr, n, 0, 0, 1);
+	private static void snail(int[][] arr, int n, int r, int c, int k) {
+		if (n < 1) 
+			return;
+		
+		if (n==1) 
+			arr[r][c] = k++;
+		
+		int i=0;
+		// 오른쪽으로
+		for (i=c; i<c+n-1; i++) 	
+			arr[r][i] = k++;
+		c = i;
+		
+		// 아래로
+		for (i=r; i<r+n-1; i++) 
+			arr[i][c] = k++;
+		r = i;
+		
+		// 왼쪽으로
+		for (i=c; i>c-n+1; i--) 
+			arr[r][i] = k++;
+		c = i;
+		
+		//위로
+		for (i=r; i>r-n+1; i--) 
+			arr[i][c] = k++;
+		r = i;
+		
+		snail(arr, n-2, r+1, c+1, k);
+		
+	}
+
+}
