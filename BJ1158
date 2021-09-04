@@ -1,0 +1,39 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+public class Main {
+// 요세푸스 문제
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int n = Integer.parseInt(st.nextToken());
+		int k = Integer.parseInt(st.nextToken());
+		StringBuilder sb = new StringBuilder();
+		sb.append("<");
+		ArrayList<Integer> arr = new ArrayList<>();
+		for (int i=1; i<=n; i++) {
+			arr.add(i);
+		}
+		
+		int index=k-1;
+		while(!arr.isEmpty()) {
+			
+			if (index>=arr.size()) {		// 1 2 3 4 5 6 7  	->[2] : 3
+											// 1 2 4 5 6 7		->[4] : 6
+											// 1 2 4 5 7 		->[6] ->[1] : 2
+											// 
+				index %= arr.size();
+			}
+			sb.append(arr.get(index)).append(", ");
+			arr.remove(index);
+			index += k-1;
+		}
+		sb.setLength(sb.length()-2);
+		sb.append(">");
+		System.out.println(sb);
+	}
+
+}
