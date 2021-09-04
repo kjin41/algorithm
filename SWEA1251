@@ -1,0 +1,78 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+ 
+public class Solution {
+// 하나로
+    static class Node{
+        int x, y;
+         
+    }
+     
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int T = Integer.parseInt(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        StringTokenizer st;
+        for (int t=1; t<=T; t++) {
+            sb.append("#").append(t).append(" ");
+            int N = Integer.parseInt(br.readLine());
+            int[][] arr = new int[N][2];
+            long[][] distance = new long[N][N];
+            st = new StringTokenizer(br.readLine());
+            for (int i=0; i<N; i++) {
+                arr[i][0] = Integer.parseInt(st.nextToken());
+            }
+            st = new StringTokenizer(br.readLine());
+            for (int i=0; i<N; i++) {
+                arr[i][1] = Integer.parseInt(st.nextToken());
+            }
+            double E = Double.parseDouble(br.readLine());
+            long minDist[] = new long[N];
+             
+            for (int i=0; i<N-1; i++) {
+                for (int j=i+1; j<N; j++) {
+                    long dist=(long) (Math.pow(arr[i][0]-arr[j][0], 2) + Math.pow(arr[i][1]-arr[j][1], 2));
+                    distance[i][j]=dist;
+                    distance[j][i]=dist;
+                }
+            }
+             
+            Arrays.fill(minDist, Long.MAX_VALUE);
+            minDist[0]=0;
+            boolean visited[] = new boolean[N];
+            long min=Long.MAX_VALUE, result=0; 
+            int index=0;
+             
+            for (int i=0; i<N; i++) {
+                min=Long.MAX_VALUE;
+                for(int j=0; j<N; j++) {
+                    if (!visited[j] && min>minDist[j]) {
+                        min = minDist[j];
+                        index=j;
+                    }
+                }
+                visited[index]=true;
+                result+=min;
+                for (int j=0; j<N; j++) {
+                    long temp = distance[index][j];
+                     
+                    if (!visited[j] && temp!=0 && minDist[j]>temp) {
+                        minDist[j]=temp;
+                    }
+                }
+            }
+             
+            long r = Math.round(result*E);
+            sb.append(r).append("\n");
+             
+        }
+        System.out.println(sb);
+    }
+ 
+}
