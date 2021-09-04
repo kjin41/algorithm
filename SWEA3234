@@ -1,0 +1,62 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class SWExpert3234 {
+// 준환이의 양팔저울
+	static int N, left, right, result;
+	static int arr[], temp[], pos[];
+	
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("input3234.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		StringBuilder sb = new StringBuilder();
+		for (int t=1; t<=T; t++) {
+			sb.append("#").append(t).append(" ");
+			
+			N = Integer.parseInt(br.readLine());
+			arr = new int[N];
+			temp = new int[N];
+			pos = new int[N];
+			left=0; right=0; result=0;
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			for (int i=0; i<N; i++) {
+				arr[i]=Integer.parseInt(st.nextToken());
+				
+			}
+			
+			perm(0, 0);
+            sb.append(result).append("\n");
+		}
+		System.out.println(sb);
+	}
+
+	private static void perm(int cnt, int flag) {
+		if(cnt==N) {
+			leftRight(0, 0, 0);
+			return;
+		}
+		
+		for (int i=0; i<N; i++) {
+			if ((flag & 1<<i)!=0)	continue;
+			
+			temp[cnt]=arr[i];
+			perm(cnt+1, flag | 1<<i);
+		}
+	}
+
+	private static void leftRight(int cnt, int left, int right) {
+		if (cnt==N) {
+			result++;
+			return;
+		}
+		for (int i=0; i<2; i++) {
+			pos[cnt]=i;
+			if (i==1 && right+temp[cnt]<=left)	leftRight(cnt+1, left, right+temp[cnt]);
+			else if (i==0)	leftRight(cnt+1, left+temp[cnt], right);
+		}
+	}
+}
