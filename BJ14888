@@ -1,0 +1,68 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class BJ14888 {
+// 연산자 끼워넣기
+	static int max=Integer.MIN_VALUE;
+	static int min=Integer.MAX_VALUE;
+	static int N;
+	static int[] arr, oper, temp;
+	
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("input14888.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		arr = new int[N];
+		oper = new int[N-1];
+		temp = new int[N-1];
+		int k=0;
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		for (int i=0; i<N; i++) {
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
+		st = new StringTokenizer(br.readLine());
+		for (int i=0; i<4; i++) {
+			int num = Integer.parseInt(st.nextToken());
+			for (int j=0; j<num; j++) {
+				oper[k++]=i;
+			}
+		}
+		perm(0, 0);
+		System.out.println(max);
+		System.out.println(min);
+		
+	}
+
+	private static void perm(int cnt, int flag) {
+		if(cnt==N-1) {
+			int k=0;
+			int result=arr[k++];
+			for (int i=0; i<N-1; i++) {
+				int num=temp[i];
+				if (num==0) {
+					result+=arr[k++];
+				} else if (num==1) {
+					result-=arr[k++];
+				} else if (num==2) {
+					result*=arr[k++];
+				} else {
+					result/=arr[k++];
+				} 
+			}
+			if (max<result)	max=result;
+			if (min>result)	min=result;
+			
+			return;
+		}
+		
+		for (int i=0; i<N-1; i++) {
+			if ((flag&1<<i)!=0)	continue;
+			temp[cnt]=oper[i];
+			perm(cnt+1, flag|1<<i);
+		}
+	}	
+
+}
