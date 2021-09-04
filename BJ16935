@@ -1,0 +1,114 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class BJ16935 {
+// 배열 돌리기 3
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("input16935.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
+		int R = Integer.parseInt(st.nextToken());
+		int[][] arr = new int[100][100];
+		int[][] rotArr;
+		for (int i=0; i<N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j=0; j<M; j++) {
+				arr[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		st = new StringTokenizer(br.readLine());
+		for (int r=0; r<R; r++) {
+			int num = Integer.parseInt(st.nextToken());
+			int t=0;
+			switch(num) {
+			case 1:
+				for (int j=0; j<M; j++) {
+					for (int i=0; i<N/2; i++) {
+						int temp = arr[i][j];
+						arr[i][j] = arr[N-1-i][j];
+						arr[N-1-i][j] = temp;
+					}
+				}
+				break;
+			case 2:
+				for (int i=0; i<N; i++) {
+					for (int j=0; j<M/2; j++) {
+						int temp = arr[i][j];
+						arr[i][j] = arr[i][M-1-j];
+						arr[i][M-1-j] = temp;
+					}
+				}
+				break;
+			case 3:
+				rotArr = new int[100][100];
+				for (int j=N-1; j>=0; j--) {
+					int[] temp = arr[N-1-j];	// 한 행씩 저장
+					int index=0;
+					for (int i=0; i<M; i++) {	// 마지막 행부터 아래로 채워짐
+						rotArr[i][j] = temp[index++];	// M*N 행렬
+					}
+				}
+				t=N;
+				N=M;
+				M=t;
+				arr = rotArr;
+				break;
+			case 4:
+				rotArr = new int[100][100];
+				for (int j=0; j<N; j++) {
+					int[] temp = arr[j];	// 한 행씩 저장
+					int index=0;
+					for (int i=M-1; i>=0; i--) {	// 첫 행부터 위로 채워짐
+						rotArr[i][j] = temp[index++];	// M*N 행렬
+					}
+				}
+				t=N;
+				N=M;
+				M=t;
+				arr = rotArr;
+				break;
+			case 5:
+				for (int i=0; i<N/2; i++) {
+					for (int j=0; j<M/2; j++) {
+						int temp = arr[i][j];
+						arr[i][j] = arr[i+N/2][j];
+						arr[i+N/2][j] = arr[i+N/2][j+M/2];
+						arr[i+N/2][j+M/2] = arr[i][j+M/2];
+						arr[i][j+M/2] = temp;
+					}
+				}
+				break;
+			default:
+				for (int i=0; i<N/2; i++) {
+					for (int j=0; j<M/2; j++) {
+						int temp = arr[i][j];
+						arr[i][j] = arr[i][j+M/2];
+						arr[i][j+M/2] = arr[i+N/2][j+M/2];
+						arr[i+N/2][j+M/2] = arr[i+N/2][j];
+						arr[i+N/2][j] = temp;
+					}
+				}
+				break;
+			}
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		for (int i=0; i<100; i++) {
+			if (arr[i][0]==0)
+				break;
+			for (int j=0; j<100; j++) {
+				if (arr[i][j]==0)
+					break;
+				sb.append(arr[i][j]).append(" ");
+			}
+			sb.append("\n");
+		}
+		System.out.println(sb);
+	}
+
+}
