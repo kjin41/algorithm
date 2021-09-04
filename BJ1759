@@ -1,0 +1,56 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class BJ1759 {
+// 암호 만들기
+	static int L, C;
+	static String[] arr, temp;
+	static StringBuilder sb = new StringBuilder();
+	
+	public static void main(String[] args) throws IOException {
+		System.setIn(new FileInputStream("input1759.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		L = Integer.parseInt(st.nextToken());
+		C = Integer.parseInt(st.nextToken());
+		st = new StringTokenizer(br.readLine());
+		arr = new String[C];
+		for (int i=0; i<C; i++) {
+			arr[i]=st.nextToken();
+		}
+		temp = new String[L];
+		Arrays.sort(arr);
+		comb(0, 0);
+		System.out.println(sb);
+	}
+
+	private static void comb(int cnt, int start) {
+		if (cnt==L) {
+			int flag = 0;
+			String vowel="aeiou";
+			for (int i=0; i<L; i++) {
+				if (vowel.contains(temp[i])) {
+					flag++;
+				}
+			}
+			
+			if (flag<1 || flag>L-2) return;
+			for (int i=0; i<L; i++) {
+				sb.append(temp[i]);
+			}
+			sb.append("\n");
+			return;
+		}
+		
+		for (int i=start; i<C; i++) {
+			
+			temp[cnt]=arr[i];
+			comb(cnt+1, i+1);
+		}
+	}
+
+}
