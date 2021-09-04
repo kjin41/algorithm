@@ -1,0 +1,70 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class BJ2116 {
+// 주사위 쌓기
+	static int N;
+	static int[][] dice;
+	static int tempMax;
+	
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("input2116.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		dice = new int[N][6];
+		for (int i=0; i<N; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			for (int j=0; j<6; j++) {
+				dice[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		int max=0;
+		for (int i=0; i<N; i++) {
+			tempMax = 0;
+			find(0, dice[i][0]);
+			if (max<tempMax) {
+				max = tempMax;
+			}
+		}
+		System.out.println(max);
+	}
+	private static void find(int row, int up) {
+		int down=0;
+		if (row == N) {
+			return;
+		}
+		
+		int j;
+		for (j=0; j<6; j++) {
+			if (dice[row][j] == up) {
+				break;
+			}
+		}
+		if (j==0||j==5) {
+			down = dice[row][5-j];
+			int temp = Math.max(dice[row][1], dice[row][2]);
+			temp = Math.max(temp, dice[row][3]);
+			temp = Math.max(temp, dice[row][4]);
+			tempMax += temp;
+		} else if (j==1||j==3) {
+			down = dice[row][4-j];
+			int temp = Math.max(dice[row][0], dice[row][2]);
+			temp = Math.max(temp, dice[row][4]);
+			temp = Math.max(temp, dice[row][5]);
+			tempMax += temp;
+		} else {
+			down = dice[row][6-j];
+			int temp = Math.max(dice[row][0], dice[row][1]);
+			temp = Math.max(temp, dice[row][3]);
+			temp = Math.max(temp, dice[row][5]);
+			tempMax += temp;
+		}
+//		System.out.println(tempMax);
+		find(row+1, down);
+		
+	}
+
+}
