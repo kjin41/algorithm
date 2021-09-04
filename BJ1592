@@ -1,0 +1,39 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class BJ1592 {
+// 영식이와 친구들
+	public static void main(String[] args) throws IOException {
+		System.setIn(new FileInputStream("input1592.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
+		int L = Integer.parseInt(st.nextToken());
+		int arr[] = new int[N];
+		int cnt=-1, index=0;
+		
+		loop:
+		while(true) {
+			index= (index+N)%N;
+			arr[index]++;
+			if (arr[index]%2==1) {
+				index+=L;
+			} else {
+				index-=L;
+			}
+			cnt++;
+			for (int i=0; i<N; i++) {
+				if (arr[i]==M) {
+					break loop;
+				}
+			}
+		}
+		
+		System.out.println(cnt);
+		
+	}
+}
