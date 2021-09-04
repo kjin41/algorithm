@@ -1,0 +1,55 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class BJ1987 {
+// 알파벳
+	static char[][] arr;
+	static int dr[] = {0, 1, 0, -1};	// 우하좌상
+	static int dc[] = {1, 0, -1, 0};
+	static int R, C, total=1;
+	static boolean[] isUsed= new boolean[26]; 
+	
+	public static void main(String[] args) throws IOException {
+		System.setIn(new FileInputStream("input1987.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		R = Integer.parseInt(st.nextToken());
+		C = Integer.parseInt(st.nextToken());
+		arr = new char[R][C];
+		
+		for (int i=0; i<R; i++) {
+			arr[i] = br.readLine().toCharArray();
+		}
+		
+		move(0, 0, 0);
+		System.out.println(total);
+		
+	}
+
+	private static void move(int r, int c, int cnt) {
+		if (total<cnt) {
+			total=cnt;
+		}
+		
+		if (isUsed[arr[r][c]-'A']) {
+			return;
+		}
+		
+		isUsed[arr[r][c]-'A']=true;
+		
+		for (int i=0; i<4; i++) {
+			int nr = r+dr[i];
+			int nc = c+dc[i];
+			if (nr>=0 && nr<R && nc>=0 && nc<C) {
+				move(nr, nc, cnt+1);
+			}
+		}
+		
+		isUsed[arr[r][c]-'A']=false;	// 더이상 갈 수 없음.
+		
+	}
+
+}
