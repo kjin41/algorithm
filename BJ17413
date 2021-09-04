@@ -1,0 +1,42 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class BJ17413 {
+// 단어 뒤집기2
+	public static void main(String[] args) throws IOException {
+		System.setIn(new FileInputStream("input17413.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String str = br.readLine();
+		StringBuilder sb = new StringBuilder();
+		int len = str.length();
+		boolean flag = false;
+		int j=0;
+		for (int i=0; i<len; i++) {
+			char c = str.charAt(i);
+			if (c=='<') {
+				flag=true;
+			} else if (c=='>') {
+				sb.append('>');
+				flag=false;
+				j=i+1;
+				continue;
+			}
+			
+			if (flag) {
+				sb.append(c);
+			} else {
+				if (c==' ') {
+					sb.append(' ');
+					j = i+1;
+				} else {
+					sb.insert(j, c);
+				}
+			}
+//			System.out.println(sb);
+		}
+		System.out.println(sb);
+	}
+
+}
