@@ -1,0 +1,100 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class BJ17135 {
+// 캐슬 디펜스
+	
+	static int N, M, D, e;
+	static int[][] enemy;
+	static boolean[] isRemoved;
+	static int[] pos = new int[3];
+	static int max;
+	
+	public static void main(String[] args) throws IOException {
+		System.setIn(new FileInputStream("input17135.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		D = Integer.parseInt(st.nextToken());
+		int[][] arr = new int[N][M];
+		for (int i=0; i<N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j=0; j<M; j++) {
+				arr[i][j] = Integer.parseInt(st.nextToken());
+				e++;
+			}
+		}
+		
+		enemy = new int[e][2];
+		e=0;
+		for (int j=0; j<M; j++) {		// 왼쪽 열부터 넣음.
+			for (int i=0; i<N; i++) {
+				if (arr[i][j]==1) {
+					enemy[e][0] = i;
+					enemy[e++][1] = j;
+				}
+			}
+		}
+		
+		isRemoved = new boolean[e];
+		findPos(0, 0);
+		System.out.println(max);
+	}
+
+	private static void findPos(int cnt, int start) {
+		if (cnt==3) {
+			int temp = removeEnemy();
+			if (max<temp) {
+				max=temp;
+			}
+			Arrays.fill(isRemoved, false);		// 초기화
+			return;
+		}
+		
+		for (int i=start; i<M; i++) {
+			pos[cnt] = i;
+			findPos(cnt+1, i+1);
+		}
+		
+	}
+
+	private static int removeEnemy() {
+		int count = 0;
+		for (int n=N; n>0; n--) {		// 궁수의 위치가 올라감
+			int[] index = new int[3];
+			int[] closest = new int[3];
+			for (int p=0; p<3; p++) { 
+				closest[p]=D+1;
+				for (int i=0; i<e; i++) {
+					if (!isRemoved[i]) {
+						int dis = Math.abs(enemy[i][0]-n) + Math.abs(enemy[i][1]-pos[p]);
+						if (closest[p]>dis) {
+							closest[p]=dis;
+							index[p]=i;
+						}
+					}
+				}
+			}
+			
+			for (int p=0; p<3; p++) {	// 가까운 적 제거 후 count
+				if (!isRemoved[index[p]] && closest[p]!=D+1) {
+					isRemoved[index[p]] = true;
+					count++;
+				}
+			}
+			
+			for (int i=0; i<e; i++) {	// 궁수 바로 윗줄 적 전부 제거
+				if (enemy[i][0]==n-1) {
+					isRemoved[i] = true;
+				}
+			}
+	
+		}
+		return count;
+	}
+}
