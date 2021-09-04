@@ -1,0 +1,85 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class SWExpert5644 {
+// 무선충전
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("input5644.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		for (int t=1; t<=T; t++) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("#").append(t).append(" ");
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int M = Integer.parseInt(st.nextToken());	// 이동 개수
+			int N = Integer.parseInt(st.nextToken());	// 충전소 개수
+			StringTokenizer stA = new StringTokenizer(br.readLine());
+			StringTokenizer stB = new StringTokenizer(br.readLine());
+			int[] A = new int[M+1];		// 사용자 A 이동방향
+			int[] B = new int[M+1];		// 사용자 B 이동방향
+			A[0]=2;		// 한칸 왼쪽에서 시작 
+			B[0]=4;		// 한칸 오른쪽에서 시작
+			for (int i=1; i<=M; i++) {
+				A[i] = Integer.parseInt(stA.nextToken());
+				B[i] = Integer.parseInt(stB.nextToken());
+			}
+
+			int[][] BC = new int[N][4];		// 충전소 정보
+			for (int i=0; i<N; i++) {
+				st = new StringTokenizer(br.readLine());
+				BC[i][0] = Integer.parseInt(st.nextToken());
+				BC[i][1] = Integer.parseInt(st.nextToken());
+				BC[i][2] = Integer.parseInt(st.nextToken());
+				BC[i][3] = Integer.parseInt(st.nextToken());
+				
+			}
+			int ax=0, ay=1, bx=11, by=10;	// 사용자 A, B 위치
+			int sum=0;
+			for (int m=0; m<=M; m++) {
+				// 사용자 A, B 이동
+				if (A[m]==1)	ay--;		
+				else if (A[m]==2)	ax++;
+				else if (A[m]==3)	ay++;
+				else if (A[m]==4)	ax--;
+				
+				if (B[m]==1)	by--;
+				else if (B[m]==2)	bx++;
+				else if (B[m]==3)	by++;
+				else if (B[m]==4)	bx--;
+				
+				int a1=0, a2=0, b1=0, b2=0;		// 사용자 A, B 최대 성능 1순위, 2순위
+				int a1x=0, a1y=0, b1x=11, b1y=11;	// 사용자 A, B의 최대성능 1순위의 충전소 위치 
+				
+				for (int n=0; n<N; n++) {
+					int ta=inArea(BC[n], ax, ay);	// 성능
+					if (a1<ta)	{a2=a1;	a1=ta; a1x=BC[n][0]; a1y=BC[n][1];}		// 1순위 충전소일때
+					else if (a2<ta)	a2=ta;	// 2순위 충전소 일때
+					
+					int tb=inArea(BC[n], bx, by);
+					if (b1<tb)	{b2=b1; b1=tb; b1x=BC[n][0]; b1y=BC[n][1];}
+					else if (b2<tb)	b2=tb;
+					
+				}
+				if (a1x==b1x && a1y==b1y) {		// 1순위가 같은 충전소라면
+					if (a2>b2)	sum+=a2+b1;		// 2순위 비교후 2순위가 높은 성능+1순위 성능
+					else	sum+=b2+a1;
+				}else	sum+=a1+b1;				// 1순위가 다르면 각각 1순위 성능 더하기
+//				System.out.println(sum);
+			}
+			sb.append(sum);
+			System.out.println(sb);
+			
+		}
+	}
+	
+	// 범위안에 들면 성능만큼, 안들면 0
+	private static int inArea(int[] BC, int x, int y) {
+		if (Math.abs(BC[0]-x)+Math.abs(BC[1]-y)<=BC[2])
+			return BC[3];
+		return 0;
+	}
+
+}
