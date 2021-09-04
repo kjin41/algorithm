@@ -1,0 +1,46 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class SWExpert5215_2 {
+	// 햄버거 다이어트
+	// 동적프로그래밍
+	
+		public static void main(String[] args) throws NumberFormatException, IOException {
+			System.setIn(new FileInputStream("src\\input5215.txt"));
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			
+			int T = Integer.parseInt(br.readLine());
+			for (int tc=1; tc<=T; tc++) {
+				StringBuilder sb = new StringBuilder();
+				sb.append("#").append(tc).append(" ");
+				StringTokenizer st = new StringTokenizer(br.readLine());
+				int N = Integer.parseInt(st.nextToken());
+				int L = Integer.parseInt(st.nextToken());
+				int score[] = new int[N];
+				int cal[] = new int[N];
+				int dp[][] = new int[N+1][L+1];
+				for (int i=0; i<N; i++) {
+					st = new StringTokenizer(br.readLine());
+					score[i] = Integer.parseInt(st.nextToken());
+					cal[i] = Integer.parseInt(st.nextToken());
+					
+				}
+				
+				for (int i=1; i<=N; i++) {
+					for (int j=1; j<=L; j++) {
+						dp[i][j] = dp[i-1][j];
+						if (cal[i-1] <= j) {
+							dp[i][j] = Math.max(score[i-1]+dp[i-1][j-cal[i-1]], dp[i-1][j]);
+						}
+					}
+				}
+				sb.append(dp[N][L]);
+				System.out.println(sb);
+			}
+		}
+
+
+	}
