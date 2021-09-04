@@ -1,0 +1,40 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Solution {
+// 사칙연산 유효성 검사
+	public static void main(String[] args) throws IOException {
+		System.setIn(new FileInputStream("input1233.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		for (int tc=1; tc<=10; tc++) {
+			int result = 1;
+			int n = Integer.parseInt(br.readLine());
+			StringBuilder sb = new StringBuilder();
+			sb.append("#").append(tc).append(" ");
+			for (int i=0; i<n; i++) {
+				StringTokenizer st = new StringTokenizer(br.readLine());
+				if (result == 0) {
+					continue;
+				}
+				st.nextToken();
+				String op = st.nextToken();
+				if (op.equals("+") || op.equals("-") || op.equals("*") || op.equals("/")) {
+					if (!st.hasMoreTokens()) {
+						result = 0;
+					}
+				} else {
+					if (st.hasMoreTokens()) {
+						result = 0;
+					}
+				}
+			}
+			sb.append(result);
+			System.out.println(sb);
+		}
+	}
+
+}
