@@ -1,0 +1,57 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.StringTokenizer;
+
+public class Main {
+// 종이 자르기
+	public static void main(String[] args) throws IOException {
+		System.setIn(new FileInputStream("input2628.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int w = Integer.parseInt(st.nextToken());
+		int h = Integer.parseInt(st.nextToken());
+		int n = Integer.parseInt(br.readLine());
+		ArrayList<Integer> width = new ArrayList<Integer>();
+		ArrayList<Integer> height = new ArrayList<Integer>();
+		
+		
+		for (int i=0; i<n; i++) {
+			st = new StringTokenizer(br.readLine());
+			if (Integer.parseInt(st.nextToken()) == 1){
+				width.add(Integer.parseInt(st.nextToken()));
+			} else {
+				height.add(Integer.parseInt(st.nextToken()));
+			}
+		}
+		Collections.sort(width);
+		Collections.sort(height);
+		
+		int temp=0, i=0;
+		int maxW=0, maxH=0;
+		for (i=0; i<width.size(); i++) {
+			if (maxW < width.get(i)-temp) {
+				maxW = width.get(i)-temp;
+			}
+			temp = width.get(i);
+		}
+		if (maxW < w-temp)
+			maxW = w-temp;
+		
+		temp=0;
+		for (i=0; i<height.size(); i++) {
+			if (maxH < height.get(i)-temp) {
+				maxH = height.get(i)-temp;
+			}
+			temp = height.get(i);
+		}
+		if (maxH < h-temp)
+			maxH = h-temp;
+		
+		System.out.println(maxW*maxH);		
+	}
+
+}
