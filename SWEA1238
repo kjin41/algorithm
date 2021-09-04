@@ -1,0 +1,76 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+public class SWExpert1238 {
+// contact
+	
+	static int L;
+	static boolean[][] arr;
+	static boolean[] visited;
+	static Queue<Integer> queue;
+	
+	public static void main(String[] args) throws IOException {
+		System.setIn(new FileInputStream("input1238.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		for (int t=1; t<=10; t++) {
+			sb.append("#").append(t).append(" ");
+			arr = new boolean[101][101];
+			visited = new boolean[101];
+			queue = new LinkedList<Integer>();
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			L = Integer.parseInt(st.nextToken());
+			int start = Integer.parseInt(st.nextToken());
+			
+			st = new StringTokenizer(br.readLine());
+			for (int l=0; l<L/2; l++) {
+				int from = Integer.parseInt(st.nextToken());
+				int to = Integer.parseInt(st.nextToken());
+				arr[from][to]=true;
+			}
+			
+			int result = bfs(start);
+			sb.append(result).append("\n");
+		}
+		System.out.println(sb);
+	}
+
+	private static int bfs(int start) {
+		queue.add(start);
+		visited[start]=true;
+		int size=0, max=0;
+		while(!queue.isEmpty()) {
+			size=queue.size();
+			ArrayList<Integer> temp = new ArrayList<>();
+			while(size-->0) {
+				int num = queue.poll();
+				visited[num]=true;
+				
+				for (int i=1; i<101; i++) {
+					if (arr[num][i] && !visited[i]) {
+						queue.add(i);
+						visited[i]=true;
+						temp.add(i);
+					}
+				}
+			}
+			if (!temp.isEmpty()) {
+				max = temp.get(0);
+				for (int i=1; i<temp.size(); i++) {
+					if (max < temp.get(i)) {
+						max = temp.get(i);
+					}
+				}
+			}
+			
+		}
+		return max;
+	}
+
+}
