@@ -1,0 +1,30 @@
+// https://swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV19AcoKI9sCFAZN
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+public class SWExpert1289{
+	// 원재의 메모리 복구하기
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int num = Integer.parseInt(br.readLine());
+		for (int i=1; i<=num; i++) {
+			String line = br.readLine();
+			int count = 0;
+			char flag = '0';
+			int length = line.length();
+			for (int j=0; j<length; j++) {
+				if (line.charAt(j) != flag) {
+					count++;
+					flag = line.charAt(j);
+				}
+			}
+			
+			System.out.println("#"+ i+ " "+count);
+			
+		}
+	}
+
+}
