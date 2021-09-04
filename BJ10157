@@ -1,0 +1,59 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+// 자리배정
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int c = Integer.parseInt(st.nextToken());	// x
+		int r = Integer.parseInt(st.nextToken());	// y
+		int k = Integer.parseInt(br.readLine());
+		
+		int[][] arr = new int[r+1][c+1];
+		
+		if (r*c < k) {
+			System.out.println(0);
+			return;
+		} 
+		int dx=1, dy=1, i=1, j=1;
+		loop:
+		while(true) {
+			for (j=dy; j<dy+r-1; j++) {
+				if (k--==1) {
+					break loop;
+				}
+			}
+			dy=j;
+			for (i=dx; i<dx+c-1; i++) {
+				if (k--==1) {
+					break loop;
+				}
+			}
+			dx=i;
+			
+			for (j=dy; j>dy-r+1; j--) {
+				if (k--==1) {
+					break loop;
+				}
+			}
+			dy=j;
+
+			for (i=dx; i>dx-c+1; i--) {
+				if (k--==1) {
+					break loop;
+				}
+			}
+			dx=i;
+			
+			i = ++dx;
+			j = ++dy;
+			r-=2;
+			c-=2;
+		}
+		System.out.println(i+" "+j);
+		
+	}
+}
