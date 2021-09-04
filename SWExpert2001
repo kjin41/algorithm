@@ -1,0 +1,52 @@
+https://swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV5PzOCKAigDFAUq
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class SWExpert2001 {
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		//System.setIn(new FileInputStream("src\\input2001.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		for (int tc=1; tc<=T; tc++) {
+			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+			int N = Integer.parseInt(st.nextToken());
+			int M = Integer.parseInt(st.nextToken());
+			int arr[][] = new int[N][N];
+			
+			for (int i=0; i<N; i++) {
+				st = new StringTokenizer(br.readLine(), " ");
+				for (int j=0; j<N; j++) {
+					arr[i][j] = Integer.parseInt(st.nextToken());
+				}
+			}
+			int p = N-M+1;
+			int temp = 0;
+			int max = -1;
+			
+			// 파리채 위치
+			for (int x=0; x<p; x++) {
+				for (int y=0; y<p; y++) {
+					
+					// 파리채 수 합
+					for (int r=x; r<x+M; r++) {
+						for (int c=y; c<y+M; c++) {
+							temp += arr[r][c];
+						}
+					}
+					if (max < temp) {
+						max = temp;
+					}
+					temp = 0;
+				}
+			}
+			System.out.println("#"+tc+" "+max);
+		}
+		
+	}
+
+}
