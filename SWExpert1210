@@ -1,0 +1,53 @@
+https://swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV14ABYKADACFAYh
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class SWExpert1210 {
+// Ladder-1
+	public static void main(String[] args) throws IOException {
+//		System.setIn(new FileInputStream("src\\input1210.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		for (int tc=1; tc<=10; tc++) {
+			br.readLine();
+			int[][] arr = new int[100][100];
+			for (int i=0; i<100; i++) {
+				StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+				for (int j=0; j<100; j++) {
+					arr[i][j] = Integer.parseInt(st.nextToken());
+				}
+			}
+			int dr = 99;
+			int dc = 0;
+			for (int i=0; i<100; i++) {
+				if (arr[99][i] == 2) {
+					dc = i;
+					break;
+				}
+			}
+//			System.out.println(dc);
+			for (dr = 99; dr>=0; dr--) {
+				if (dc-1>=0 && arr[dr][dc-1] == 1)
+					while (dc-1>=0 && arr[dr][dc-1] == 1) {
+						//  왼쪽으로 더이상 1이 아닐때까지 가기
+						dc--;
+					} 
+			
+				else if (dc+1<100 && arr[dr][dc+1] == 1) 
+					while (dc+1<100 && arr[dr][dc+1] == 1 ) {
+						// 오른쪽으로 더이상 1이 아닐때까지 가기
+						dc++;
+					} 
+			}
+			System.out.println("#" + tc + " "+ dc);
+			
+		}
+
+	}
+
+}
