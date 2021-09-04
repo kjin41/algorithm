@@ -1,0 +1,147 @@
+https://swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV5LyE7KD2ADFAXc
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class SWExpert1873 {
+// 상호의 배틀필드
+	public static void main(String[] args) throws IOException {
+		// System.setIn(new FileInputStream("src\\input1873.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		
+		for (int tc=1; tc<=T; tc++) {
+
+			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+			int H = Integer.parseInt(st.nextToken());
+			int W = Integer.parseInt(st.nextToken());
+			char[][] arr = new char[H][W];
+			
+			int current[] = new int[3];		// 전차 위치: 행,열, 방향
+			for (int i=0; i<H; i++) {
+				String line = br.readLine();
+//				arr[i] = line.toCharArray();	// 한줄을 char 배열로 받음.
+				for (int j=0; j<W; j++) {
+					char c = line.charAt(j);
+					arr[i][j] = c;
+					if (c=='^') {			// 전자 위치 받음.
+						current[0] = i;
+						current[1] = j;
+						current[2] = 1;
+					} else if (c=='v') {
+						current[0] = i;
+						current[1] = j;
+						current[2] = 2;
+					} else if (c=='<') {
+						current[0] = i;
+						current[1] = j;
+						current[2] = 3;
+					} else if (c=='>') {
+						current[0] = i;
+						current[1] = j;
+						current[2] = 4;
+					} 
+				}
+			}
+//			System.out.println(Arrays.toString(current));
+			
+			
+			int N = Integer.parseInt(br.readLine());
+			String str = br.readLine();
+			for (int i=0; i<N; i++) {
+				action(arr, str.charAt(i), current, H, W);
+			}
+			
+			System.out.print("#"+tc+" ");
+			for (int i=0; i<H; i++) {
+				for (int j=0; j<W; j++) {
+					System.out.print(arr[i][j]);
+				}
+				System.out.println();
+			}
+			
+		}
+		
+	}
+
+
+	private static void action(char[][] arr, char a, int[] current, int H, int W) {
+		int dr = current[0];
+		int dc = current[1];
+		int dd = current[2];
+		
+		if (a == 'U') {
+			current[2] = 1;
+			arr[dr][dc] = '^';	// 방향전환
+			if (dr-1 >= 0 && arr[dr-1][dc] == '.') {	// 이동
+				current[0] = dr-1;
+				arr[dr][dc] = '.';
+				arr[dr-1][dc] = '^';
+			}
+		} else if (a == 'D') {
+			current[2] = 2;
+			arr[dr][dc] = 'v';
+			if (dr+1 < H && arr[dr+1][dc] == '.') {
+				current[0] = dr+1;
+				arr[dr][dc] = '.';
+				arr[dr+1][dc] = 'v';
+			}
+		} else if (a == 'L') {
+			current[2] = 3;
+			arr[dr][dc] = '<';
+			if (dc-1 >= 0 && arr[dr][dc-1] == '.') {
+				current[1] = dc-1;
+				arr[dr][dc] = '.';
+				arr[dr][dc-1] = '<';
+			}
+		} else if (a == 'R') {
+			current[2] = 4;
+			arr[dr][dc] = '>';
+			if (dc+1 < W && arr[dr][dc+1] == '.') {
+				current[1] = dc+1;
+				arr[dr][dc] = '.';
+				arr[dr][dc+1] = '>';
+			}
+			
+		// 공격	
+		} else if (a == 'S') {
+			if (dd == 1) {		// 위로 공격
+				while (dr-1 >= 0 && arr[dr-1][dc] != '#') {
+					if (arr[dr-1][dc]=='*') {
+						arr[dr-1][dc] = '.';
+						break;
+					}
+					dr--;
+				}
+			} else if (dd == 2) {		// 아래로 공격
+				while (dr+1 < H && arr[dr+1][dc] != '#') {
+					if (arr[dr+1][dc]=='*') {
+						arr[dr+1][dc] = '.';
+						break;
+					}
+					dr++;
+				}
+			} else if (dd == 3) {		// 왼쪽으로 공격
+				while (dc-1 >= 0 && arr[dr][dc-1] != '#') {
+					if (arr[dr][dc-1]=='*') {
+						arr[dr][dc-1] = '.';
+						break;
+					}
+					dc--;
+				}
+			} else if (dd == 4) {		// 오른쪽으로 공격
+				while (dc+1 < W && arr[dr][dc+1] != '#') {
+					if (arr[dr][dc+1]=='*') {
+						arr[dr][dc+1] = '.';
+						break;
+					}
+					dc++;
+				}
+			}
+		}
+	}
+}
