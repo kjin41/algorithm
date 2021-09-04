@@ -5,8 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class SWExpert9658 {
-
+public class Solution {
+	// 유효숫자표기
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		// System.setIn(new FileInputStream("src\\input9658.txt"));
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
