@@ -1,0 +1,48 @@
+// https://swexpertacademy.com/main/code/problem/problemDetail.do?contestProbId=AV134DPqAA8CFAYh
+// View
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class SWExpert1206 {
+	// 빌딩 뷰
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("src\\input1206.txt"));
+//		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		for (int i=1; i<=10; i++) {
+			int n = Integer.parseInt(br.readLine());
+			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+			int[] arr = new int[n];
+			for (int j=0; j<n; j++) {
+				arr[j] = Integer.parseInt(st.nextToken());
+			}
+			int count = 0;
+			for (int j=0; j<n; j++) {
+				int h = arr[j];
+				int min = h;
+				if (j-2 >=0 && min > h-arr[j-2]) {
+					min = h-arr[j-2];
+				}
+				if (j-1 >=0 && min > h-arr[j-1]) {
+					min = h-arr[j-1];
+				}
+				if (j+1 < n && min > h-arr[j+1]) {
+					min = h-arr[j+1];
+				}
+				if (j+2 < n && min > h-arr[j+2]) {
+					min = h-arr[j+2];
+				}
+				if (min > 0)
+					count += min;
+			}
+			
+			System.out.println("#"+ i+ " "+ count);
+		}
+
+	}
+
+}
