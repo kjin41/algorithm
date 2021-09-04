@@ -1,0 +1,39 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class BJ2839 {
+// 설탕 배달
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
+		int ans=0;
+		switch(N%5) {
+		case 1:
+			if (N/5>0)
+				ans=N/5+1;
+			else 
+				ans=-1;
+			break;
+		case 2:
+			if (N/5>1)
+				ans=N/5+2;
+			else 
+				ans=-1;
+			break;
+		case 3:
+			ans=N/5+1;
+			break;
+		case 4:
+			if (N/5>0)
+				ans=N/5+2;
+			else 
+				ans=-1;
+			break;
+		default:
+			ans=N/5;
+		}
+		System.out.println(ans);
+	}
+
+}
