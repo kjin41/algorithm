@@ -1,0 +1,46 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class BJ2798 {
+// 블랙잭
+	static int temp[] = new int[3];
+	static int arr[];
+	static int N, M, max;
+	
+	
+	public static void main(String[] args) throws IOException {
+		System.setIn(new FileInputStream("input2798.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		arr = new int[N];
+		st = new StringTokenizer(br.readLine());
+		for (int n=0; n<N; n++) {
+			arr[n]=Integer.parseInt(st.nextToken());
+		}
+		
+		comb(0, 0, 0);
+		System.out.println(max);
+	}
+
+
+	private static void comb(int cnt, int start, int sum) {
+		if (sum>M) return;
+		if (cnt==3) {
+			if (max<sum) {
+				max = sum;
+			}
+			return;
+		}
+		
+		for (int i=start; i<N; i++) {
+			temp[cnt]=arr[i];
+			comb(cnt+1, i+1, sum+temp[cnt]);
+		}
+	}
+
+}
