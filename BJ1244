@@ -1,0 +1,66 @@
+package hwalgo01_서울_07반_강진;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class BJ1244 {
+	// 스위치 켜고 끄기 문제
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("src\\input1244.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int num = Integer.parseInt(br.readLine());
+		int arr[] = new int[num];
+		String line = br.readLine();
+		for (int i=0; i<num; i++) {
+			arr[i] = line.charAt(2*i)-48;
+		}
+
+		int snum = Integer.parseInt(br.readLine());
+		for (int i=0; i<snum; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+			int sex = Integer.parseInt(st.nextToken());
+			int index = Integer.parseInt(st.nextToken());
+
+			
+			if (sex == 1) {
+				male(arr, index, num);
+			} else {
+				female(arr, index-1, num);
+			}
+		}
+
+		StringBuilder sb = new StringBuilder();
+		for(int i=0; i<num; i++) {
+			if (i%20 == 19) {
+				sb.append(arr[i] + "\n");
+			} else
+				sb.append(arr[i] + " ");
+		}
+		sb.setLength(sb.length()-1);
+		
+		System.out.println(sb);
+
+	}
+	
+	public static void male(int[] arr, int index, int n) {
+		for (int i=index-1; i<n; i+=index) {
+			arr[i] = 1 - arr[i];
+		}
+	}
+
+	public static void female(int[] arr, int index, int n) {
+		int i=1;
+		arr[index] = 1-arr[index];
+		while (index-i >= 0 && index+i < n && arr[index-i] == arr[index+i]){
+			arr[index-i] = 1-arr[index-i];
+			arr[index+i] = 1-arr[index+i];
+			i++;
+		}
+	}
+}
+
+
+
