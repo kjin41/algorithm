@@ -1,0 +1,52 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+public class Main {
+// 수 이어가기
+	static ArrayList<Integer> arr;
+	static int cnt;
+	
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int max=1;
+		int n = Integer.parseInt(br.readLine());
+
+		for (int i=1; i<=n; i++) {
+			ArrayList<Integer> temp = new ArrayList<>();
+			temp.add(n);
+			temp.add(i);
+			cnt = 2;
+			find(0, temp);
+			if (max < cnt) {
+				max = cnt;
+				arr = temp;
+			}
+		}
+		
+		System.out.println(max);
+		StringBuilder sb = new StringBuilder();
+		for (int num: arr) {
+			sb.append(num).append(" ");
+		}
+		System.out.println(sb);
+		
+	}
+
+	private static void find(int index, ArrayList<Integer> temp) {
+		int num = temp.get(index) - temp.get(index+1);
+//		System.out.println(temp);
+		if (num<0) {
+			return;
+		} else {
+			temp.add(num);
+			cnt++;
+			find(++index, temp);
+			
+		}
+		
+		
+	}
+
+}
