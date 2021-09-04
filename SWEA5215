@@ -1,0 +1,67 @@
+
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class SWExpert5215 {
+// 햄버거 다이어트
+// 부분합 
+	
+	static int max;
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		// System.setIn(new FileInputStream("src\\input5215.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		int T = Integer.parseInt(br.readLine());
+		for (int tc=1; tc<=T; tc++) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("#").append(tc).append(" ");
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int N = Integer.parseInt(st.nextToken());
+			int L = Integer.parseInt(st.nextToken());
+			int score[] = new int[N];
+			int cal[] = new int[N];
+			max=0;
+			boolean isSelected[] = new boolean[N];
+			for (int i=0; i<N; i++) {
+				st = new StringTokenizer(br.readLine());
+				score[i] = Integer.parseInt(st.nextToken());
+				cal[i] = Integer.parseInt(st.nextToken());
+				
+			}
+
+			find(score, cal, isSelected, 0, N, L);
+			sb.append(max);
+			System.out.println(sb);
+		}
+	}
+
+	private static void find(int[] score, int[] cal, boolean[] isSelected, int cnt, int N, int L) {
+		int scoreSum=0;
+		int calSum=0;
+		if (N==cnt) {
+			for (int i=0; i<N; i++) {
+				if (isSelected[i]) {
+					calSum += cal[i];
+					scoreSum += score[i];
+				}
+			}
+			
+			if (calSum <= L && max < scoreSum) {
+				max = scoreSum;
+			}
+			return;
+		}
+		
+		isSelected[cnt] = true;
+		find(score, cal, isSelected, cnt+1, N, L);
+		
+		isSelected[cnt] = false;
+		find(score, cal, isSelected, cnt+1, N, L);
+		
+	}
+
+}
