@@ -1,0 +1,77 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class BJ10026 {
+// 적록색약
+	static class Node{
+		char c;
+		int i, j;
+		public Node(char c, int i, int j) {
+			super();
+			this.c = c;
+			this.i = i;
+			this.j = j;
+		}
+	}
+	
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("input10026.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
+		char arr1[][] = new char[N][N];
+		char arr2[][] = new char[N][N];
+		for (int i=0; i<N; i++) {
+			arr1[i] = br.readLine().toCharArray();
+		}
+		for (int i=0; i<N; i++) {
+			for (int j=0; j<N; j++) {
+				char c = arr1[i][j];
+				if (c=='G') {
+					c='R';
+				}
+				arr2[i][j] = c;
+			}
+		}
+		int result1 = find(arr1, N);
+		int result2 = find(arr2, N);
+		System.out.println(result1+" "+result2);
+		
+		
+	}
+	private static int find(char[][] arr, int N) {
+		boolean visited[][] = new boolean[N][N];
+		int[] dr = {1, 0, 0, -1};
+		int[] dc = {0, 1, -1, 0};
+		int cnt=0;
+		
+		for (int i=0; i<N; i++) {
+			for (int j=0; j<N; j++) {
+				if (!visited[i][j]) {
+					cnt++;
+					Queue<Node> queue = new LinkedList<Node>();
+					queue.add(new Node(arr[i][j], i, j));
+					while(!queue.isEmpty()) {
+						Node node = queue.poll();
+						visited[node.i][node.j]=true;
+						for (int k=0; k<4; k++) {
+							int nr = node.i+dr[k];
+							int nc = node.j+dc[k];
+							if (nr>=0 && nr<N && nc>=0 && nc<N 
+									&& !visited[nr][nc] && node.c==arr[nr][nc]) {
+								visited[nr][nc]=true;
+								queue.add(new Node(arr[nr][nc], nr, nc));
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return cnt;
+	}
+
+}
