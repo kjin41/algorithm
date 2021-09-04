@@ -1,0 +1,103 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class BJ17136 {
+// 색종이 붙이기
+	static int cnt, total, min=50, tempTotal;
+	static int[][] arr = new int[10][10];
+	static int[] paper;
+	static int[] temp = new int[4];
+	static boolean[][] posted;
+	
+	public static void main(String[] args) throws IOException {
+		System.setIn(new FileInputStream("input17136.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
+		for (int i=0; i<10; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j=0; j<10; j++) {
+				int num = Integer.parseInt(st.nextToken());
+				if (num==1) {
+					total++;
+				}
+				arr[i][j] = num;
+			}
+		}
+		
+		perm(0, 0);
+		
+//		System.out.println(total);
+		if (min==50) {
+			min = -1;
+		}
+		System.out.println(min);
+		
+	}
+
+	private static void perm(int n, int flag) {
+		if (n==4) {
+			paper = new int[6];
+			posted = new boolean[10][10];
+			cnt=0;
+			tempTotal = total;
+			for (int k=0; k<4; k++) {
+				for (int i=0; i<10; i++) {
+					for (int j=0; j<10; j++) {
+						if (!posted[i][j] && arr[i][j]==1) {
+							post(i, j, temp[k]);
+						}
+					}
+				}
+			}
+			
+			if (tempTotal<=5) {
+				cnt+=tempTotal;
+				if (min>cnt) {
+//					System.out.println(Arrays.toString(temp));
+//					System.out.println(cnt);
+					min=cnt;
+				}
+			}
+			
+			
+			return;
+		}
+		
+		for (int i=0; i<4; i++) {
+			if ((flag&1<<i)!=0)	continue;
+			temp[n]=i+2;
+			perm(n+1, flag|1<<i);
+			
+		}
+	}
+
+	private static void post(int r, int c, int n) {
+		if (paper[n]==5) {
+			return;
+		}
+		
+		for (int i=r; i<r+n; i++) {
+			for (int j=c; j<c+n; j++) {
+				if (i>=10 || j>=10 || arr[i][j]==0 || posted[i][j]) {
+					return;
+				}
+			}
+		}
+	
+		
+		for (int i=r; i<r+n; i++) {
+			for (int j=c; j<c+n; j++) {
+				posted[i][j]=true;
+				tempTotal--;
+			}
+		}
+		
+		paper[n]++;
+		cnt++;
+	}
+
+}
