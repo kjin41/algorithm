@@ -1,0 +1,78 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class SWExpert6808 {
+// 규영이와 인영이의 카드게임
+	static int kyu[] = new int[9];
+	static int in[] = new int[9];
+	static int temp[] = new int[9];
+	static int kyuWin;
+	static int kyuLose;
+	
+	
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("input6808.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		for(int t=1; t<=T; t++) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("#").append(t).append(" ");
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			
+			for (int i=0; i<9; i++) {
+				kyu[i] = Integer.parseInt(st.nextToken());
+			}
+			int index=0;
+			for (int num=1; num<=18; num++) {
+				int include=0;
+				for (int i=0; i<9; i++) {
+					if (kyu[i] != num) {
+						include++;
+					}
+				}
+				if (include==9) {
+					in[index++] = num;
+				}
+			}
+			
+			kyuWin = 0;
+			kyuLose = 0;
+			perm(0, 0);
+			sb.append(kyuWin).append(" ").append(kyuLose);
+			System.out.println(sb);
+		}
+		
+	}
+
+	private static void perm(int cnt, int flag) {
+		if (cnt == 9) {
+			int kyuScore=0, inScore=0;
+			for (int i=0; i<9; i++) {
+				if (kyu[i]>temp[i]) {
+					kyuScore += kyu[i]+temp[i];
+				} else {
+					inScore += kyu[i]+temp[i];
+				}
+			}
+			
+			if (kyuScore>inScore) {
+				kyuWin++;
+			} else {
+				kyuLose++;
+			}
+			return;
+		}
+		
+		for (int i=0; i<9; i++) {
+			if ((flag & 1<<i)!=0) {
+				continue;
+			}
+			temp[cnt] = in[i];
+			perm(cnt+1, flag | 1<<i);
+		}
+	}
+
+}
