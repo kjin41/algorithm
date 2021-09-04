@@ -1,0 +1,42 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+public class Solution3499 {
+// 퍼펙트 셔플
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		System.setIn(new FileInputStream("src\\input3499.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		
+		for (int tc=1; tc<=T; tc++) {
+			Queue<String> card1 = new LinkedList<String>();
+			Queue<String> card2 = new LinkedList<String>();
+			int n = Integer.parseInt(br.readLine());
+			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+			for (int i=0; i<n/2; i++) {
+				card1.add(st.nextToken());
+			}
+			if (n%2==1) {
+				card1.add(st.nextToken());
+			}
+			for (int i=0; i<n/2; i++) {
+				card2.add(st.nextToken());
+			}
+			
+			StringBuilder sb = new StringBuilder();
+			for (int i=0; i<(n+1)/2; i++) {
+				sb.append(card1.poll()).append(" ");
+				if (card2.peek() != null)
+					sb.append(card2.poll()).append(" ");
+			}
+			System.out.println("#"+tc+" "+sb);
+		}
+		
+	}
+
+}
