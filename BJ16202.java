@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class bj16202 {
-// baekjoon 16202. MST게임
+public class BJ16202 {
+// Baekjoon 16202. MST게임
 // MST kruskal
 	static class Edge {
 		int start, end, weight;
