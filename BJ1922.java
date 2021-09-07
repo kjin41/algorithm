@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class bj1922 {
-// baekjoon 1922. 네트워크 연결
+public class BJ1922 {
+// Baekjoon 1922. 네트워크 연결
 // MST prim
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
