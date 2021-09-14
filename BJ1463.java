@@ -2,39 +2,26 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class BJ1463 {
 // baekjoon 1463. 1로 만들기 
-// dynamic programming
+// dp
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		System.setIn(new FileInputStream("input1463.txt"));
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
-		int cnt=0;
-		
-		Queue<Integer> queue = new LinkedList<Integer>();
-		queue.add(N);
-		boolean used[] = new boolean[N+1];
-		loop:
-		while(!queue.isEmpty()) {
-			int size = queue.size();
-			for (int i=0; i<size; i++) {
-				int temp = queue.poll();
-				if (used[temp])	continue;
-				used[temp]=true;
-				if (temp==1) 
-					break loop;
-				if(temp%3==0)
-					queue.add(temp/3);
-				if(temp%2==0)
-					queue.add(temp/2);
-				queue.add(temp-1);
-			}
-			cnt++;
+		int dp[] = new int[N+1];
+		for (int i=2; i<=N; i++) {
+			dp[i]=Integer.MAX_VALUE;
 		}
-		System.out.println(cnt);
+		for (int i=1; i<N; i++) {
+			if (i*3<=N)
+				dp[i*3] = Math.min(dp[i*3], dp[i]+1);
+			if (i*2<=N)
+				dp[i*2] = Math.min(dp[i*2], dp[i]+1);
+			dp[i+1] = Math.min(dp[i+1], dp[i]+1);
+		}
+		System.out.println(dp[N]);
 	}
 
 }
