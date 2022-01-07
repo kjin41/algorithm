@@ -27,7 +27,7 @@ public class BJ1182 {
 		for (int i=1; i<=N; i++) {
 			comb(0, 0, i, 0);
 		}
-		
+		 
 		System.out.println(count);
 		
 		br.close();
